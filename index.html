@@ -3,12 +3,12 @@
 
 <head>
     <meta charset=utf-8 />
-    <title>Power Plants!</title>
+    <title>Rasslin'</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 
     <script src="http://cdn.leafletjs.com/leaflet/v1.4.0/leaflet.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.0-rc.1/leaflet.css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.0-rc.1/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.4.0-rc.1/leaflet.js"></script>
     <script src="address to your server/Leaflet.
 pattern-master/dist/leaflet.pattern-src.
                  js"></script>
@@ -112,7 +112,7 @@ pattern-master/dist/leaflet.pattern-src.
     
 
     <footer>
-        <p>Anytime the territory system is mentioned in wrestling media a map is shown. These maps have never been good or interactive. This map is an intervention</p>
+        <p>Any time the territory system is mentioned in wrestling media a map is shown. These maps have never been good or interactive. This map is an intervention</p>
         <p>With the exception of the NWF, the wrestling territories are connected and mutually exclusive, even if sometimes promoters ran shows outside of their territory proper. </p>
         <p>Not featured on the map is Canada, which was also part of the NWA system - Wrestling territories in Hawai or Puerto Rico will be added in the future</p>
         <p>See the legend in the bottom left corner to turn on off the cities in each territory</p>
@@ -1171,7 +1171,7 @@ var CCW_points = L.geoJson(plants, {
                 });
                 
                 layer.bindTooltip("City Name:" + ' ' +feature.properties.plant_name + "<br>" + "Territory:" + ' ' +feature.properties.capacity_mw).openPopup()
-            } }).addTo(map)
+            } }).addTo(map) 
         
         
      function PNW_filter(feature) {
