@@ -1,0 +1,1785 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset=utf-8 />
+    <title>Power Plants!</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+    <script src="http://cdn.leafletjs.com/leaflet/v1.4.0/leaflet.js"></script>
+    
+    <script src="address to your server/Leaflet.
+pattern-master/dist/leaflet.pattern-src.
+                 js"></script>
+    
+    
+    
+
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v1.4.0/leaflet.css" />
+    <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: whitesmoke;
+            font-family: Lato, sans-serif;
+            color: #0D0000;
+        }
+        header {
+            padding: 6px 10%;
+        }
+        h1 {
+            display: inline-block;
+            margin-right: 20px;
+            color: #001323;
+        }
+        h2 {
+            display: inline-block;
+            color: #001323;
+        }
+        #map {
+            width: 80%;
+            height: 540px;
+            margin: 10px auto;
+        }
+        footer {
+            padding: 6px 10%;
+            width: 80%;
+        }
+        p {
+            font-size: 1em;
+            color: #001323;
+        }
+        
+        .hydro {
+            color: #4669e7;
+        }
+        .coal {
+            color: #b46d00;
+        }
+        .petro {
+            color: #81196d;
+        }
+        
+        .leaflet-control-layers-toggle {
+  width: 100px;
+   
+}
+.leaflet-control-layers-toggle:after {
+  content: 'Press';
+  padding-left:  
+}
+        
+        .info {
+    padding: 6px 8px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
+.info h4 {
+    margin: 0 0 5px;
+    color: #777;
+}
+        
+        .legend {
+    line-height: 18px;
+    color: #555;
+}
+.legend i {
+    font size: 2
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.7;
+}
+       
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Power Plants in the United States</h1>
+        <h2>I Have the Power!</h2>
+
+    </header>
+
+    
+    
+    <div id='map'></div>
+    
+    
+
+    <footer>
+        <p>Bradley Gardener</p>
+        <p>The above map provides the locations and names of each hydro, coal, and petroleum power plant in the United States. The size of the point corresponds with the energy in megawatts that the plant produces.</p>
+    </footer>
+
+    <script src="power-plants.js"></script>
+    <script src="wt.json"></script>
+      <script src="mw.json"></script>
+    <script>
+
+       var map = L.map('map', {
+          center: [36,-94],
+          zoom: 4,
+      });
+      
+      var tiles = L.tileLayer('https://{s}.tile.openstreetmap.se/hydda/base/{z}/{x}/{y}.png', {
+	maxZoom: 18,
+	attribution: 'Tiles courtesy of <a href="http://openstreetmap.se/" target="_blank">OpenStreetMap Sweden</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+});
+      tiles.addTo(map);
+   
+      /*map.on('click', function(){
+//cities.bringToFront();
+            
+});    
+        FOR ALL CITIES
+      var cities = L.geoJson(plants, {
+            pointToLayer: function(feature,latlng) {
+                return L.circleMarker(latlng, { 
+                color: '#2B1303',
+                weight: 1,
+                fillColor: '#b46d00',
+                fillOpacity: .7,
+                radius: 5
+                });   
+            },
+            
+            
+            onEachFeature: function(feature, layer){
+                                layer.on("mouseover", function(){
+                    layer.setStyle({
+                        fillColor: "yellow"
+                    })
+                });
+                layer.on("mouseout", function(){
+                    layer.setStyle({
+                        fillColor: '#b46d00'
+                    })
+                }); 
+                layer.on("mouseover", function(){
+                });
+                
+                layer.bindTooltip("City Name:" + ' ' +feature.properties.plant_name).openPopup()
+            }
+          
+          + '<a href="https://www.youtube.com/watch?v=ilG_VqrbJck">It Smells like Shit in Here</a>' + "<br>" + "Main Character:" + ' ' + "Don Owens").openPopup()
+        ;*/
+      
+      
+       /* + "Territory:" "<br>" + feature.properties.capacity_mw
+*/
+      function zoomToFeature(e) {
+    map.fitBounds(e.target.getBounds());
+}   
+  
+        
+  function pnwstyle(feature) {
+    return {
+        fillColor: "#D49605",
+        weight: 1,
+        opacity: 1,
+        color: '#4326C0',
+        dashArray: '1',
+        fillOpacity: 0.4
+    };
+} 
+ 
+function hollywoodStyle(feature) {
+    return {
+        fillColor: "#EA65E4",
+        weight: 1,
+        opacity: 1,
+        color: '#D7D7D7',
+        dashArray: '1',
+        fillOpacity: 0.4
+    };
+} 
+        
+function wswaStyle(feature) {
+    return {
+        fillColor: "#FFB518",
+        weight: 1,
+        opacity: 1,
+        color: '#F10127',
+        dashArray: '1',
+        fillOpacity: 0.4
+    };
+} 
+        
+       var PNW  = L.geoJson(ter, {style: pnwstyle,
+                                   filter: pFilter,  onEachFeature: function(feature, layer){
+                                layer.on("mouseover", function(){
+                    layer.setStyle({
+                        fillColor: "pink"
+                    })
+                });
+                layer.on("mouseout", function(){
+                    layer.setStyle({
+                            fillColor: "#C0B80D",
+           fillColor: "#EA65E4",
+        weight: 1,
+        opacity: 1,
+        color: '#D7D7D7',
+        dashArray: '1',
+        fillOpacity: 0.4
+                    })
+                }); 
+                layer.on("mouseover", function(){
+                    layer.bindTooltip("Territory:" + ' '+"Pacific Northwest Wrestling" + "<br>" + "Story:" + ' ' + "<a href='https://shitloadsofwrestling.tumblr.com/post/168646736068/roddy-piper-tells-a-story-about-portland-wrestling/embed'>It Smells Like Shit in Here</a><br/>" + "<br>" + "Main Character:" + ' ' + "Don Owens").openPopup();//this was double
+                  
+                });
+                layer.on("click", function(){
+                    map.fitBounds(this.getBounds())  
+                });
+            }    
+                            
+                                
+                                }).addTo(map);
+        
+function pFilter(feature) {
+  if (feature.properties.Ter === "Pacific Northwest") return true
+}
+        
+
+        
+var holly = L.geoJson(ter, {style: hollywoodStyle,
+                                   filter: hwFilter,
+                           onEachFeature: function(feature, layer){
+                                layer.on("mouseover", function(){
+                    layer.setStyle({
+                        fillColor: "pink"
+                    })
+                });
+                layer.on("mouseout", function(){
+                    layer.setStyle({
+                            fillColor: "#C0B80D",
+        fillColor: "#D49605",
+        weight: 1,
+        opacity: 1,
+        color: '#4326C0',
+        dashArray: '1',
+        fillOpacity: 0.4
+                    })
+                }); 
+                layer.on("mouseover", function(){
+                    layer.bindTooltip("Territory:" + ' '+"Hollywood Wrestling" + "<br>" + "Story:" + ' ' + "<a href='https://www.youtube.com/watch?v=ilG_VqrbJck'>Haku Fights Marines and Eats Mace</a><br/>" + "<br>" + "Main Character:" + ' ' + "Haku").openPopup();
+                  
+                });
+                layer.on("click", function(){
+                    map.fitBounds(this.getBounds())  
+                });
+            }    
+                            
+                        
+                            
+                                
+                                }).addTo(map);
+        
+function hwFilter(feature) {
+  if (feature.properties.Ter === "Hollywood Wrestling") return true
+}      
+        
+var wswa = L.geoJson(ter, {style: wswaStyle,
+                                   filter: wswaFilter,
+                          
+                                   onEachFeature: function(feature, layer){
+                                layer.on("mouseover", function(){
+                    layer.setStyle({
+                        fillColor: "pink"
+                    })
+                });
+                layer.on("mouseout", function(){
+                    layer.setStyle({
+                            fillColor: "#C0B80D",
+         fillColor: "#FFB518",
+        weight: 1,
+        opacity: 1,
+        color: '#F10127',
+        dashArray: '1',
+        fillOpacity: 0.4
+                    })
+                }); 
+                layer.on("mouseover", function(){
+                    layer.bindTooltip("Territory:" + ' '+"Western States Wrestling Alliance").openPopup();
+                  
+                });
+                layer.on("click", function(){
+                    map.fitBounds(this.getBounds())  
+                });
+            }    
+                            
+                         
+                            
+                            
+                                
+                                }).addTo(map);
+        
+function wswaFilter(feature) {
+  if (feature.properties.Ter === "Wrestling States Wrestling Alliance") return true
+}      
+        
+function wwwfStyle(feature) {
+    return {
+        fillColor: "#1646AC",
+        weight: 1,
+        opacity: 1,
+        color: '#ED983B',
+        dashArray: '1',
+        fillOpacity: 0.4
+    };
+} 
+
+var wwwf = L.geoJson(ter, {style: wwwfStyle,
+                                   filter: wwwfFilter,
+                          
+                                   onEachFeature: function(feature, layer){
+                                layer.on("mouseover", function(){
+                    layer.setStyle({
+                        fillColor: "pink"
+                    })
+                });
+                layer.on("mouseout", function(){
+                    layer.setStyle({
+                            fillColor: "#C0B80D",
+        fillColor: "#1646AC",
+        weight: 1,
+        opacity: 1,
+        color: '#ED983B',
+        dashArray: '1',
+        fillOpacity: 0.4
+                    })
+                }); 
+               layer.on("mouseover", function(){
+                    layer.bindTooltip("Territory:" + ' '+"World Wide Wrestling Federation" + "<br>" + "Story:" + ' ' + "<a href='https://www.youtube.com/watch?v=K76tKBBcTTo'>Duggan and the Sheik Break Kayfabe</a><br/>" + "<br>" + "Main Character:" + ' ' + "Hacksaw Jim Duggan and the Iron Sheik" + + "<br>" + "Story:" + ' ' + "<a href='https://www.youtube.com/watch?v=WhgYov9t9ys&t=496s'>Haku Bites a Guys Nose Off</a><br/>" + "<br>" + "Main Character:" + ' ' + "Haku" + "<br>" + "Story:" + ' ' + "<a href='https://www.youtube.com/watch?v=Ny077TFco1k'>George Steele the Snitch</a><br/>" + "<br>" + "Main Character:" + ' ' + "Bret, Owen, the Macho Man, and George Steele").openPopup()
+                  
+                });
+                layer.on("click", function(){
+                    map.fitBounds(this.getBounds())  
+                });
+            }    
+                            
+                        
+                                
+                                }).addTo(map);
+        
+function wwwfFilter(feature) {
+  if (feature.properties.Ter === "World Wide Wrestling Federation") return true
+}      
+ 
+        function gcwStyle(feature) {
+    return {
+        fillColor: "#645DA3",
+        weight: 1,
+        opacity: 1,
+        color: 'white',
+        dashArray: '1',
+        fillOpacity: 0.4
+    };
+} 
+
+var gcw = L.geoJson(ter, {style: gcwStyle,
+                                   filter: gcwfilter,
+                          
+                                   onEachFeature: function(feature, layer){
+                                layer.on("mouseover", function(){
+                    layer.setStyle({
+                        fillColor: "pink"
+                    })
+                });
+                layer.on("mouseout", function(){
+                    layer.setStyle({
+                            fillColor: "#C0B80D",
+        fillColor: "#645DA3",
+        weight: 1,
+        opacity: 1,
+        color: 'white',
+        dashArray: '1',
+        fillOpacity: 0.4
+                    })
+                layer.on("mouseover", function(){
+                    layer.bindTooltip("Territory:" + ' '+"Georgia Championship Wrestling" + "<br>" + "Story:" + ' ' + "<a href='https://www.google.com/'>Google</a><br/>" + "<br>" + "Main Character:" + ' ' + "Don Owens").openPopup();
+                  
+                });
+                layer.on("click", function(){
+                    map.fitBounds(this.getBounds())  
+                });
+            }    )}
+                            
+                                
+                                
+                                }).addTo(map);
+        
+function gcwfilter(feature) {
+  if (feature.properties.Ter === "Georgia Championship Wrestling") return true
+}      
+        
+  function flStyle(feature) {
+    return {
+        fillColor: "#FE8400",
+        weight: 1,
+        opacity: 1,
+        color: 'white',
+        dashArray: '1',
+        fillOpacity: 0.4
+    };
+} 
+
+var fla = L.geoJson(ter, {style: flStyle,
+                                   filter: flfilter,
+                          
+                                   onEachFeature: function(feature, layer){
+                                layer.on("mouseover", function(){
+                    layer.setStyle({
+                        fillColor: "pink"
+                    })
+                });
+                layer.on("mouseout", function(){
+                    layer.setStyle({
+                            fillColor: "#C0B80D",
+       fillColor: "#FE8400",
+        weight: 1,
+        opacity: 1,
+        color: 'white',
+        dashArray: '1',
+        fillOpacity: 0.4
+                    })
+                }); 
+                layer.on("mouseover", function(){
+                    layer.bindTooltip("Territory:" + ' '+"Championship Wrestling from Florida" + "<br>" + "Story:" + ' ' + "<a href='https://www.google.com/'>Google</a><br/>" + "<br>" + "Main Character:" + ' ' + "Don Owens").openPopup();
+                  
+                });
+                layer.on("click", function(){
+                    map.fitBounds(this.getBounds())  
+                });
+            }    
+                            
+                        
+                            
+                            
+                                
+                                }).addTo(map);
+        
+function flfilter(feature) {
+  if (feature.properties.Ter === "Championship Wrestling from Florida") return true
+}      
+      
+function wccwStyle(feature) {
+    return {
+        fillColor: "#C50A00",
+        weight: 1,
+        opacity: 1,
+        color: '#C0B80D',
+        dashArray: '1',
+        fillOpacity: 0.4
+    };
+} 
+
+var wccw = L.geoJson(ter, {style: wccwStyle,
+                                   filter: wccwfilter,
+                          
+                          
+                                   onEachFeature: function(feature, layer){
+                                layer.on("mouseover", function(){
+                    layer.setStyle({
+                        fillColor: "pink"
+                    })
+                });
+                layer.on("mouseout", function(){
+                    layer.setStyle({
+                            fillColor: "#C0B80D",
+       fillColor: "#C50A00",
+        weight: 1,
+        opacity: 1,
+        color: '#C0B80D',
+        dashArray: '1',
+        fillOpacity: 0.4
+                    })
+                }); 
+                layer.on("mouseover", function(){
+                    layer.bindTooltip("Territory:" + ' '+"World Class Championship Wrestling" + "<br>" + "Story:" + ' ' + "<a href='https://www.google.com/'>Google</a><br/>" + "<br>" + "Main Character:" + ' ' + "Don Owens").openPopup().openPopup();
+                  
+                });
+                layer.on("click", function(){
+                    map.fitBounds(this.getBounds())  
+                });
+            }    
+                            
+                        
+                            
+                                
+                                }).addTo(map);
+        
+function wccwfilter(feature) {
+  if (feature.properties.Ter === "World Class Championship Wrestling") return true
+}      
+        
+        
+function htownStyle(feature) {
+    return {
+        fillColor: "#C0B80D",
+        weight: 1,
+        opacity: 1,
+        color: '#1D376A',
+        dashArray: '1',
+        fillOpacity: 0.4
+    };
+} 
+
+var htown = L.geoJson(ter, {style: htownStyle,
+                                   filter: htownfilter,
+                                   onEachFeature: function(feature, layer){
+                                layer.on("mouseover", function(){
+                    layer.setStyle({
+                        fillColor: "pink"
+                    })
+                });
+                layer.on("mouseout", function(){
+                    layer.setStyle({
+                            fillColor: "#C0B80D",
+        weight: 1,
+        opacity: 1,
+        color: '#1D376A',
+        dashArray: '1',
+        fillOpacity: 0.4
+                    })
+                }); 
+              layer.on("mouseover", function(){
+                    layer.bindTooltip("Territory:" + ' '+"Houston Wrestling" + "<br>" + "Story:" + ' ' + "<a href='https://www.youtube.com/watch?v=ilG_VqrbJck'>Google</a><br/>" + "<br>" + "Main Character:" + ' ' + "Hercules saves Cornette's life").openPopup();
+                  
+                });
+                layer.on("click", function(){
+                    map.fitBounds(this.getBounds())  
+                });
+            }    
+                            
+                                     
+                                
+                                }).addTo(map);
+        
+function htownfilter(feature) {
+  if (feature.properties.Ter === "Houston Wrestling") return true
+}      
+    
+function swStyle(feature) {
+    return {
+        fillColor: "#600000",
+        weight: 1,
+        opacity: 1,
+        color: 'white',
+        dashArray: '1',
+        fillOpacity: 0.4
+    };
+} 
+
+var sw = L.geoJson(ter, {style: swStyle,
+                                   filter: swfilter,
+                                   onEachFeature: function(feature, layer){
+                                layer.on("mouseover", function(){
+                    layer.setStyle({
+                        fillColor: "pink"
+                    })
+                });
+                layer.on("mouseout", function(){
+                    layer.setStyle({
+                            fillColor: "#600000",
+        weight: 1,
+        opacity: 1,
+        color: 'white',
+        dashArray: '1',
+        fillOpacity: 0.4
+                    })
+                }); 
+                layer.on("mouseover", function(){
+                    layer.bindTooltip("Territory:" + ' '+"Southwest Championship Wrestling").openPopup();
+                  
+                });
+                layer.on("click", function(){
+                    map.fitBounds(this.getBounds())  
+                });
+            }    
+                            
+                        
+                            
+                            
+                                
+                                }).addTo(map);
+        
+function swfilter(feature) {
+  if (feature.properties.Ter === "Southwest Championship Wrestling") return true
+}           
+ 
+function wssStyle(feature) {
+    return {
+        fillColor: "#EE0000",
+        weight: 1,
+        opacity: 1,
+        color: '#0000E4',
+        dashArray: '1',
+        fillOpacity: 0.4
+    };
+} 
+
+var sw = L.geoJson(ter, {style: wssStyle,
+                                   filter: wssfilter,
+                                   onEachFeature: function(feature, layer){
+                                layer.on("mouseover", function(){
+                    layer.setStyle({
+                        fillColor: "pink"
+                    })
+                });
+                layer.on("mouseout", function(){
+                    layer.setStyle({
+                               fillColor: "#EE0000",
+        weight: 1,
+        opacity: 1,
+        color: '#0000E4',
+        dashArray: '1',
+        fillOpacity: 0.4
+                    })
+                }); 
+                   layer.on("mouseover", function(){
+                    layer.bindTooltip("Territory:" + ' '+"Western State Sports" + "<br>" + "Story:" + ' ' + "<a href='https://www.youtube.com/watch?v=-NDSAmKatN8'>Hats Off to the Smoking Guns</a><br/>" + "<br>" + "Main Character:" + ' ' + "The 1-2-3 Kid").openPopup();
+                  
+                });
+                layer.on("click", function(){
+                    map.fitBounds(this.getBounds())  
+                });
+            }    
+                            
+                                
+                                }).addTo(map);
+        
+function wssfilter(feature) {
+  if (feature.properties.Ter === "Western State Sports") return true
+}                
+        
+        
+function awaStyle(feature) {
+    return {
+        fillColor: "#000074",
+        weight: 1,
+        opacity: 1,
+        color: '#FE0000',
+        dashArray: '1',
+        fillOpacity: 0.4
+    };
+} 
+
+var awa = L.geoJson(ter, {style: awaStyle,
+                                   filter: awafilter,
+                                   onEachFeature: function(feature, layer){
+                                layer.on("mouseover", function(){
+                    layer.setStyle({
+                        fillColor: "pink"
+                    })
+                });
+                layer.on("mouseout", function(){
+                    layer.setStyle({
+                            fillColor: "#000074",
+        weight: 1,
+        opacity: 1,
+        color: '#FE0000',
+        dashArray: '1',
+        fillOpacity: 0.4
+                    })
+                }); 
+                   layer.on("mouseover", function(){
+                    layer.bindTooltip("Territory:" + ' '+"American Wrestling Association" + "<br>" + "Story:" + ' ' + "<a href='https://www.youtube.com/watch?v=gB_abjSpHTQ'>The Limo Driver Dies from Partying Too Hard</a><br/>" + "<br>" + "Main Character:" + ' ' + "The 4 Horsemen" + + "<br>" + "Story:" + ' ' + "<a href='https://www.tickpick.com/blog/crazy-ric-flair-stories-you-havent-heard/'>Slick Rick Buys 2 Expensive Coats</a><br/>" + "<br>" + "Main Character:" + ' ' + "Ric Flair").openPopup();
+                  
+                });
+                layer.on("click", function(){
+                    map.fitBounds(this.getBounds())  
+                });
+            }    
+                            
+                                
+                                }).addTo(map);
+        
+function awafilter(feature) {
+  if (feature.properties.Ter === "American Wrestling Association") return true
+}   
+     
+ function wwaStyle(feature) {
+    return {
+        fillColor: "white",
+        weight: 1,
+        opacity: 1,
+        color: 'black',
+        dashArray: '1',
+        fillOpacity: 0.4
+    };
+} 
+
+var wwa = L.geoJson(ter, {style: wwaStyle,
+                                   filter: wwafilter,
+                                   onEachFeature: function(feature, layer){
+                                layer.on("mouseover", function(){
+                    layer.setStyle({
+                        fillColor: "pink"
+                    })
+                });
+                layer.on("mouseout", function(){
+                    layer.setStyle({
+                           fillColor: "white",
+        weight: 1,
+        opacity: 1,
+        color: 'black',
+        dashArray: '1',
+        fillOpacity: 0.4
+                    })
+                }); 
+                   layer.on("mouseover", function(){
+                    layer.bindTooltip("Territory:" + ' '+"World Wrestling Association" + "<br>" + "Story:" + ' ' + "<a href='https://www.youtube.com/watch?v=iVvATXh7WoQ'>The Rougeaus Get Revenge</a><br/>" + "<br>" + "Main Character:" + ' ' + "The Rougeaus and Dynamite Kid").openPopup();
+                  
+                });
+                layer.on("click", function(){
+                    map.fitBounds(this.getBounds())  
+                });
+            }    
+                             
+                
+                            
+                                
+                                }).addTo(map);
+        
+function wwafilter(feature) {
+  if (feature.properties.Ter === "World Wrestling Association") return true
+}          
+
+ function dStyle(feature) {
+    return {
+        fillColor: "#F9F1FF",
+        weight: 1,
+        opacity: 1,
+        color: '#8481D8',
+        dashArray: '1',
+        fillOpacity: 0.4
+    };
+} 
+
+var d = L.geoJson(ter, {style: dStyle,
+                                   filter: dfilter,
+                                   onEachFeature: function(feature, layer){
+                                layer.on("mouseover", function(){
+                    layer.setStyle({
+                        fillColor: "pink"
+                    })
+                });
+                layer.on("mouseout", function(){
+                    layer.setStyle({
+                          fillColor: "#F9F1FF",
+        weight: 1,
+        opacity: 1,
+        color: '#8481D8',
+        dashArray: '1',
+        fillOpacity: 0.4
+                    })
+                }); 
+                  layer.on("mouseover", function(){
+                    layer.bindTooltip("Territory:" + ' '+"Detroit Big Time Wrestling" + "<br>" + "Story:" + ' ' + "<a href='https://www.youtube.com/watch?v=ECv94zlpYuo'>Tony Atlas Gets Sucker Punched Because He Likes Ribs</a><br/>" + "<br>" + "Main Character:" + ' ' + "Tony Atlas").openPopup();
+                  
+                });
+                layer.on("click", function(){
+                    map.fitBounds(this.getBounds())  
+                });
+            }    
+                            
+                                
+                                }).addTo(map);
+                            
+                                
+                                
+        
+function dfilter(feature) {
+  if (feature.properties.Ter === "Detroit Big Time Wrestling") return true
+}          
+        
+        
+function atlanticStyle(feature) {
+    return {
+        fillColor: "#FEFE24",
+        weight: 1,
+        opacity: 1,
+        color: '#3947C1',
+        dashArray: '1',
+        fillOpacity: 0.4
+    };
+} 
+
+var atlantic = L.geoJson(ter, {style: atlanticStyle,
+                                   filter: atlanticfilter,
+                                   onEachFeature: function(feature, layer){
+                                layer.on("mouseover", function(){
+                    layer.setStyle({
+                        fillColor: "pink"
+                    })
+                });
+                layer.on("mouseout", function(){
+                    layer.setStyle({
+                         fillColor: "#FEFE24",
+        weight: 1,
+        opacity: 1,
+        color: '#3947C1',
+        dashArray: '1',
+        fillOpacity: 0.4
+                    })
+                }); 
+                   layer.on("mouseover", function(){
+                    layer.bindTooltip("Territory:" + ' '+"Mid-Atlantic Wrestling" + "<br>" + "Story:" + ' ' + "<a href='https://www.youtube.com/watch?v=2ozQVYHisfA'>They Made the Most Money in the History of the Bar</a><br/>" + "Main Character:" + ' ' + "Ric Flair").openPopup();
+                  
+                });
+                layer.on("click", function(){
+                    map.fitBounds(this.getBounds())  
+                });
+            }    
+                            
+                                
+                                }).addTo(map);
+        
+function atlanticfilter(feature) {
+  if (feature.properties.Ter === "Jim Crockett Promotions/Mid-Atlantic Wrestling") return true
+}
+        
+function cwaStyle(feature) {
+    return {
+        fillColor: "#9A7652",
+        weight: 1,
+        opacity: 1,
+        color: '#6B7E8C',
+        dashArray: '1',
+        fillOpacity: 0.4
+    };
+} 
+
+var cwa = L.geoJson(ter, {style: cwaStyle,
+                                   filter: cwafilter,
+                                   onEachFeature: function(feature, layer){
+                                layer.on("mouseover", function(){
+                    layer.setStyle({
+                        fillColor: "pink"
+                    })
+                });
+                layer.on("mouseout", function(){
+                    layer.setStyle({
+                         fillColor: "#9A7652",
+        weight: 1,
+        opacity: 1,
+        color: '#6B7E8C',
+        dashArray: '1',
+        fillOpacity: 0.4
+                    })
+                }); 
+                   layer.on("mouseover", function(){
+                    layer.bindTooltip("Territory:" + ' '+"Continental Wrestling Association" + "<br>" + "Story:" + ' ' + "<a href='https://www.youtube.com/watch?v=WhgYov9t9ys&t=496s'>The Macho Man Gets into an Altercation at the Waffle House</a><br/>" + "<br>" + "Main Character:" + ' ' + "Randy Savage"+ "<br>" + "Story:" + ' ' + "<a href='https://www.youtube.com/watch?v=WhgYov9t9ys&t=496s'>Sneaking into Graceland</a><br/>" + "<br>" + "Main Character:" + ' ' + "The Rockers and The Nasty Boyz" + "<br>" + "Story:" + ' ' + "<a href='https://www.youtube.com/watch?v=XYtNBDElyeE)'>Hey Verne... The Hotel Burned Down</a><br/>" + "<br>" + "Main Character:" + ' ' + "Mr. Perfect and the Nasty Boyz") .openPopup();
+                  
+                });
+                layer.on("click", function(){
+                    map.fitBounds(this.getBounds())  
+                });
+            }    
+                            
+                                
+                                }).addTo(map);
+        
+function cwafilter(feature) {
+  if (feature.properties.Ter === "Continental Wrestling Association") return true}
+    
+    
+        
+function neStyle(feature) {
+    return {
+        fillColor: "grey",
+        weight: 1,
+        opacity: 1,
+        color: '#6B7E8C',
+        dashArray: '1',
+        fillOpacity: 0.4
+    };
+} 
+
+var neutral = L.geoJson(ter, {style: neStyle,
+                                   filter: nefilter,
+                          onEachFeature: function(feature, layer){
+                                layer.on("mouseover", function(){
+                    layer.setStyle({
+                        fillColor: "pink"
+                    })
+                });
+                layer.on("mouseout", function(){
+                    layer.setStyle({
+                         fillColor: "#DD852B",
+         fillColor: "grey",
+        weight: 1,
+        opacity: 1,
+        color: '#6B7E8C',
+        dashArray: '1',
+        fillOpacity: 0.4
+                    })
+                }); 
+                   layer.on("mouseover", function(){
+                    layer.bindTooltip("Montana and Wyoming: Not Profitable").openPopup();
+                  
+                });
+                
+            }    
+                            
+                                
+                                }).addTo(map);
+        
+function nefilter(feature) {
+  if (feature.properties.Ter === "Montana and Wyoming (Neutral)") return true}
+        
+function nocalStyle(feature) {
+    return {
+        fillColor: "#DD852B",
+        weight: 1,
+        opacity: 1,
+        color: 'black',
+        dashArray: '1',
+        fillOpacity: 0.4
+    };
+} 
+
+var northerCalifornia = L.geoJson(ter, {style: nocalStyle,
+                                   filter: nocalfilter,
+                                   onEachFeature: function(feature, layer){
+                                layer.on("mouseover", function(){
+                    layer.setStyle({
+                        fillColor: "pink"
+                    })
+                });
+                layer.on("mouseout", function(){
+                    layer.setStyle({
+                         fillColor: "#DD852B",
+        weight: 1,
+        opacity: 1,
+        color: 'black',
+        dashArray: '1',
+        fillOpacity: 0.4
+                    })
+                }); 
+                   layer.on("mouseover", function(){
+                  
+                });
+                layer.on("click", function(){
+                    map.fitBounds(this.getBounds())  
+                });
+            }    
+                            
+                                
+                                }).addTo(map);
+        
+function nocalfilter(feature) {
+  if (feature.properties.Ter === "Northern California Big Time Wrestling") return true}
+
+ function nwtStyle(feature) {
+    return {
+        fillColor: "#424242",
+        weight: 1,
+        opacity: 1,
+        color: 'white',
+        dashArray: '1',
+        fillOpacity: 0.4
+    };
+} 
+
+var nwt = L.geoJson(ter, {style: nwtStyle,
+                                   filter: nwtfilter,
+                           onEachFeature: function(feature, layer){
+                                layer.on("mouseover", function(){
+                    layer.setStyle({
+                        fillColor: "pink"
+                    })
+                });
+                layer.on("mouseout", function(){
+                    layer.setStyle({
+                        fillColor: "#424242",
+        weight: 1,
+        opacity: 1,
+        color: 'white',
+        dashArray: '1',
+        fillOpacity: 0.4
+                    })
+                }); 
+                   layer.on("mouseover", function(){
+                    layer.bindTooltip("Territory:" + ' '+"Natiional Wrestling Territory" + "<br>" + "Story:" + ' ' + "<a href='https://www.google.com/'>Google</a><br/>" + "<br>" + "Main Character:" + ' ' + "Don Owens").openPopup();
+                  
+                });
+                layer.on("click", function(){
+                    map.fitBounds(this.getBounds())  
+                });
+            }    
+                            
+                                
+                                }).addTo(map);
+        
+function nwtfilter(feature) {
+  if (feature.properties.Ter === "National Wrestling Territory") return true}   
+
+       
+        
+       function mswStyle(feature) {
+    return {
+        fillColor: "#BA4939",
+        weight: 1,
+        opacity: 1,
+        color: '#2C3B7C',
+        dashArray: '1',
+        fillOpacity: 0.4
+    };
+} 
+
+
+var msw = L.geoJson(ter, {style: mswStyle,
+                                   filter: mswfilter,
+                          onEachFeature: function(feature, layer){
+                                layer.on("mouseover", function(){
+                    layer.setStyle({
+                        fillColor: "pink",
+                        
+                    })
+                });
+                layer.on("mouseout", function(){
+                    layer.setStyle({
+                        fillColor: "#BA4939",
+        weight: 1,
+        opacity: 1,
+        color: '#2C3B7C',
+        dashArray: '1',
+        fillOpacity: 0.4
+                    })
+                }); 
+                   layer.on("mouseover", function(){
+                    layer.bindTooltip("Territory:" + ' '+"Mid-South Wrestling").openPopup();
+                  
+                });
+                layer.on("click", function(){
+                    map.fitBounds(this.getBounds())  
+                });
+            }    
+                          
+                    
+                                }).addTo(map);
+        
+        
+        
+function mswfilter(feature) {
+  if (feature.properties.Ter === "Mid-South Wrestling") return true} 
+        
+       function heartLandStyle(feature) {
+    return {
+        fillColor: "#F8D37B",
+        weight: 1,
+        opacity: 1,
+        color: '#A793CE',
+        dashArray: '1',
+        fillOpacity: 0.4
+    };
+} 
+        
+var heartLand = L.geoJson(er, {style: heartLandStyle,
+                                   
+                          onEachFeature: function(feature, layer){
+                                layer.on("mouseover", function(){
+                    layer.setStyle({
+                        fillColor: "pink",
+                        
+                    })
+                });
+                layer.on("mouseout", function(){
+                    layer.setStyle({
+                         fillColor: "#F8D37B",
+        weight: 1,
+        opacity: 1,
+        color: '#A793CE',
+        dashArray: '1',
+        fillOpacity: 0.4
+                    })
+                }); 
+                              
+                layer.on("mouseover", function(){
+                    layer.bindTooltip("Territory:" + ' '+"Mid-West Wrestling Association" + "<br>" + "Story:" + ' ' + "<a href='https://www.youtube.com/watch?v=d544N8QqFq0'>Haku Breaks the Handcuffs</a><br/>" + "<br>" + "Main Character:" + ' ' + "Haku").openPopup()  
+                });
+                      
+                              
+                              
+                              
+                layer.on("click", function(){
+                    map.fitBounds(this.getBounds())  
+                });
+                              
+                              
+            }
+                          
+                    
+                                }).addTo(map);
+        
+
+
+
+     
+    function CCW_filter(feature) {
+     if (feature.properties.capacity_mw === "Continental Champtionship Wrestling") return true
+  } 
+        
+        
+    
+    
+        
+var CCW_points = L.geoJson(plants, {
+            pointToLayer: function(feature,latlng) {
+                return L.circleMarker(latlng, { 
+                color: '#2B1303',
+                weight: 1,
+                fillColor: '#b46d00',
+                fillOpacity: .7,
+                radius: 5
+                });   
+            },
+    
+    filter: CCW_filter,
+            
+            
+            onEachFeature: function(feature, layer){
+                                layer.on("mouseover", function(){
+                    layer.setStyle({
+                        fillColor: "yellow"
+                    })
+                });
+                layer.on("mouseout", function(){
+                    layer.setStyle({
+                        fillColor: '#b46d00'
+                    })
+                }); 
+                layer.on("mouseover", function(){
+                });
+                
+                layer.bindTooltip("City Name:" + ' ' +feature.properties.plant_name + "<br>" + "Territory:" + ' ' +feature.properties.capacity_mw).openPopup()
+            } }).addTo(map)
+        
+        
+     function PNW_filter(feature) {
+     if (feature.properties.capacity_mw === "Pacific NorthWest Wrestling") return true
+  } 
+        
+var PNW_points = L.geoJson(plants, {
+            pointToLayer: function(feature,latlng) {
+                return L.circleMarker(latlng, { 
+                color: '#2B1303',
+                weight: 1,
+                fillColor: '#b46d00',
+                fillOpacity: .7,
+                radius: 5
+                });   
+            },
+    
+    filter: PNW_filter,
+            
+            
+            onEachFeature: function(feature, layer){
+                                layer.on("mouseover", function(){
+                    layer.setStyle({
+                        fillColor: "yellow"
+                    })
+                });
+                layer.on("mouseout", function(){
+                    layer.setStyle({
+                        fillColor: '#b46d00'
+                    })
+                }); 
+                layer.on("mouseover", function(){
+                });
+                
+                layer.bindTooltip("City Name:" + ' ' +feature.properties.plant_name + "<br>" + "Territory:" + ' ' +feature.properties.capacity_mw).openPopup()
+            } }).addTo(map)    
+  
+       function hollyWood_filter(feature) {
+     if (feature.properties.capacity_mw === "Hollywood Wrestling") return true
+    
+    console.log(feature)
+  } 
+        
+var hollyWood_points = L.geoJson(plants, {
+            pointToLayer: function(feature,latlng) {
+                return L.circleMarker(latlng, { 
+                color: '#2B1303',
+                weight: 1,
+                fillColor: '#b46d00',
+                fillOpacity: .7,
+                radius: 5
+                });   
+            },
+    
+    filter: hollyWood_filter,
+            
+            
+            onEachFeature: function(feature, layer){
+                                layer.on("mouseover", function(){
+                    layer.setStyle({
+                        fillColor: "yellow"
+                    })
+                });
+                layer.on("mouseout", function(){
+                    layer.setStyle({
+                        fillColor: '#b46d00'
+                    })
+                }); 
+                layer.on("mouseover", function(){
+                });
+                
+                layer.bindTooltip("City Name:" + ' ' +feature.properties.plant_name + "<br>" + "Territory:" + ' ' +feature.properties.capacity_mw).openPopup()
+            } }).addTo(map)    
+  
+    
+
+       function wwwf_filter(feature) {
+     if (feature.properties.capacity_mw === "World Wide Wrestling Federation") return true
+    
+    console.log(feature)
+  } 
+        
+var wwwf_points = L.geoJson(plants, {
+            pointToLayer: function(feature,latlng) {
+                return L.circleMarker(latlng, { 
+                color: '#2B1303',
+                weight: 1,
+                fillColor: '#b46d00',
+                fillOpacity: .7,
+                radius: 5
+                });   
+            },
+    
+    filter: wwwf_filter,
+            
+            
+            onEachFeature: function(feature, layer){
+                                layer.on("mouseover", function(){
+                    layer.setStyle({
+                        fillColor: "yellow"
+                    })
+                });
+                layer.on("mouseout", function(){
+                    layer.setStyle({
+                        fillColor: '#b46d00'
+                    })
+                }); 
+                layer.on("mouseover", function(){
+                });
+                
+                layer.bindTooltip("City Name:" + ' ' +feature.properties.plant_name + "<br>" + "Territory:" + ' ' +feature.properties.capacity_mw).openPopup()
+            } }).addTo(map) 
+
+  function gcw_filter(feature) {
+     if (feature.properties.capacity_mw === "Georgia Champtionship Wrestling") return true
+    
+    console.log(feature)
+  } 
+        
+var gcw_points = L.geoJson(plants, {
+            pointToLayer: function(feature,latlng) {
+                return L.circleMarker(latlng, { 
+                color: '#2B1303',
+                weight: 1,
+                fillColor: '#b46d00',
+                fillOpacity: .7,
+                radius: 5
+                });   
+            },
+    
+    filter: gcw_filter,
+            
+            
+            onEachFeature: function(feature, layer){
+                                layer.on("mouseover", function(){
+                    layer.setStyle({
+                        fillColor: "yellow"
+                    })
+                });
+                layer.on("mouseout", function(){
+                    layer.setStyle({
+                        fillColor: '#b46d00'
+                    })
+                }); 
+                layer.on("mouseover", function(){
+                });
+                
+                layer.bindTooltip("City Name:" + ' ' +feature.properties.plant_name + "<br>" + "Territory:" + ' ' +feature.properties.capacity_mw).openPopup()
+            } }).addTo(map) 
+
+  
+function fla_filter(feature) {
+     if (feature.properties.capacity_mw === "Championship Wrestling from Florida") return true
+    
+    console.log(feature)
+  } 
+        
+var fla_points = L.geoJson(plants, {
+            pointToLayer: function(feature,latlng) {
+                return L.circleMarker(latlng, { 
+                color: '#2B1303',
+                weight: 1,
+                fillColor: '#b46d00',
+                fillOpacity: .7,
+                radius: 5
+                });   
+            },
+    
+    filter: fla_filter,
+            
+            
+            onEachFeature: function(feature, layer){
+                                layer.on("mouseover", function(){
+                    layer.setStyle({
+                        fillColor: "yellow"
+                    })
+                });
+                layer.on("mouseout", function(){
+                    layer.setStyle({
+                        fillColor: '#b46d00'
+                    })
+                }); 
+                layer.on("mouseover", function(){
+                });
+                
+                layer.bindTooltip("City Name:" + ' ' +feature.properties.plant_name + "<br>" + "Territory:" + ' ' +feature.properties.capacity_mw).openPopup()
+            } }).addTo(map) 
+    
+
+function wccw_filter(feature) {
+     if (feature.properties.capacity_mw === "World Class Championship Wrestling") return true
+    
+    console.log(feature)
+  } 
+        
+var wccw_points = L.geoJson(plants, {
+            pointToLayer: function(feature,latlng) {
+                return L.circleMarker(latlng, { 
+                color: '#2B1303',
+                weight: 1,
+                fillColor: '#b46d00',
+                fillOpacity: .7,
+                radius: 5
+                });   
+            },
+    
+    filter: wccw_filter,
+            
+            
+            onEachFeature: function(feature, layer){
+                                layer.on("mouseover", function(){
+                    layer.setStyle({
+                        fillColor: "yellow"
+                    })
+                });
+                layer.on("mouseout", function(){
+                    layer.setStyle({
+                        fillColor: '#b46d00'
+                    })
+                }); 
+                layer.on("mouseover", function(){
+                });
+                
+                layer.bindTooltip("City Name:" + ' ' +feature.properties.plant_name + "<br>" + "Territory:" + ' ' +feature.properties.capacity_mw).openPopup()
+            } }).addTo(map) 
+        
+
+function western_state_filter(feature) {
+     if (feature.properties.capacity_mw === "Western State Sports") return true
+    
+    console.log(feature)
+  } 
+        
+var western_state_points = L.geoJson(plants, {
+            pointToLayer: function(feature,latlng) {
+                return L.circleMarker(latlng, { 
+                color: '#2B1303',
+                weight: 1,
+                fillColor: '#b46d00',
+                fillOpacity: .7,
+                radius: 5
+                });   
+            },
+    
+    filter: western_state_filter,
+            
+            
+            onEachFeature: function(feature, layer){
+                                layer.on("mouseover", function(){
+                    layer.setStyle({
+                        fillColor: "yellow"
+                    })
+                });
+                layer.on("mouseout", function(){
+                    layer.setStyle({
+                        fillColor: '#b46d00'
+                    })
+                }); 
+                layer.on("mouseover", function(){
+                });
+                
+                layer.bindTooltip("City Name:" + ' ' +feature.properties.plant_name + "<br>" + "Territory:" + ' ' +feature.properties.capacity_mw).openPopup()
+            } }).addTo(map) 
+
+function awa_filter(feature) {
+     if (feature.properties.capacity_mw === "American Wrestling Association") return true
+    
+    console.log(feature)
+  } 
+        
+var awa_points = L.geoJson(plants, {
+            pointToLayer: function(feature,latlng) {
+                return L.circleMarker(latlng, { 
+                color: '#2B1303',
+                weight: 1,
+                fillColor: '#b46d00',
+                fillOpacity: .7,
+                radius: 5
+                });   
+            },
+    
+    filter: awa_filter,
+            
+            
+            onEachFeature: function(feature, layer){
+                                layer.on("mouseover", function(){
+                    layer.setStyle({
+                        fillColor: "yellow"
+                    })
+                });
+                layer.on("mouseout", function(){
+                    layer.setStyle({
+                        fillColor: '#b46d00'
+                    })
+                }); 
+                layer.on("mouseover", function(){
+                });
+                
+                layer.bindTooltip("City Name:" + ' ' +feature.properties.plant_name + "<br>" + "Territory:" + ' ' +feature.properties.capacity_mw).openPopup()
+            } }).addTo(map) 
+
+function mid_atlantic_filter(feature) {
+     if (feature.properties.capacity_mw === "Mid-Atlantic Championship Wrestling") return true
+    
+    console.log(feature)
+  } 
+        
+var mid_atlantic_points = L.geoJson(plants, {
+            pointToLayer: function(feature,latlng) {
+                return L.circleMarker(latlng, { 
+                color: '#2B1303',
+                weight: 1,
+                fillColor: '#b46d00',
+                fillOpacity: .7,
+                radius: 5
+                });   
+            },
+    
+    filter: mid_atlantic_filter,
+            
+            
+            onEachFeature: function(feature, layer){
+                                layer.on("mouseover", function(){
+                    layer.setStyle({
+                        fillColor: "yellow"
+                    })
+                });
+                layer.on("mouseout", function(){
+                    layer.setStyle({
+                        fillColor: '#b46d00'
+                    })
+                }); 
+                layer.on("mouseover", function(){
+                });
+                
+                layer.bindTooltip("City Name:" + ' ' +feature.properties.plant_name + "<br>" + "Territory:" + ' ' +feature.properties.capacity_mw).openPopup()
+            } }).addTo(map) 
+
+function mid_south_filter(feature) {
+     if (feature.properties.capacity_mw === "Mid-South Wrestling Association") return true
+    
+    console.log(feature)
+  } 
+        
+var mid_south_points = L.geoJson(plants, {
+            pointToLayer: function(feature,latlng) {
+                return L.circleMarker(latlng, { 
+                color: '#2B1303',
+                weight: 1,
+                fillColor: '#b46d00',
+                fillOpacity: .7,
+                radius: 5
+                });   
+            },
+    
+    filter: mid_south_filter,
+            
+            
+            onEachFeature: function(feature, layer){
+                                layer.on("mouseover", function(){
+                    layer.setStyle({
+                        fillColor: "yellow"
+                    })
+                });
+                layer.on("mouseout", function(){
+                    layer.setStyle({
+                        fillColor: '#b46d00'
+                    })
+                }); 
+                layer.on("mouseover", function(){
+                });
+                
+                layer.bindTooltip("City Name:" + ' ' +feature.properties.plant_name + "<br>" + "Territory:" + ' ' +feature.properties.capacity_mw).openPopup()
+            } }).addTo(map) 
+
+function Heartland_filter(feature) {
+     if (feature.properties.capacity_mw === "Mid-West Wrestling") return true
+    
+    console.log(feature)
+  } 
+        
+var Heartland_points = L.geoJson(plants, {
+            pointToLayer: function(feature,latlng) {
+                return L.circleMarker(latlng, { 
+                color: '#2B1303',
+                weight: 1,
+                fillColor: '#b46d00',
+                fillOpacity: .7,
+                radius: 5
+                });   
+            },
+    
+    filter: Heartland_filter,
+            
+            
+            onEachFeature: function(feature, layer){
+                                layer.on("mouseover", function(){
+                    layer.setStyle({
+                        fillColor: "yellow"
+                    })
+                });
+                layer.on("mouseout", function(){
+                    layer.setStyle({
+                        fillColor: '#b46d00'
+                    })
+                }); 
+                layer.on("mouseover", function(){
+                });
+                
+                layer.bindTooltip("City Name:" + ' ' +feature.properties.plant_name + "<br>" + "Territory:" + ' ' +feature.properties.capacity_mw).openPopup()
+            } }).addTo(map) 
+
+function NWF_filter(feature) {
+     if (feature.properties.capacity_mw === "National Wrestling Federation") return true
+    
+    console.log(feature)
+  } 
+        
+var NWF_points = L.geoJson(plants, {
+            pointToLayer: function(feature,latlng) {
+                return L.circleMarker(latlng, { 
+                color: '#2B1303',
+                weight: 1,
+                fillColor: '#b46d00',
+                fillOpacity: .7,
+                radius: 5
+                });   
+            },
+    
+    filter: NWF_filter,
+            
+            
+            onEachFeature: function(feature, layer){
+                                layer.on("mouseover", function(){
+                    layer.setStyle({
+                        fillColor: "yellow"
+                    })
+                });
+                layer.on("mouseout", function(){
+                    layer.setStyle({
+                        fillColor: '#b46d00'
+                    })
+                }); 
+                layer.on("mouseover", function(){
+                });
+                
+                layer.bindTooltip("City Name:" + ' ' +feature.properties.plant_name + "<br>" + "Territory:" + ' ' +feature.properties.capacity_mw).openPopup()
+            } }).addTo(map) 
+
+function WWA_filter(feature) {
+     if (feature.properties.capacity_mw === "World Wrestling Association") return true
+    
+    console.log(feature)
+  } 
+        
+var WWA_points = L.geoJson(plants, {
+            pointToLayer: function(feature,latlng) {
+                return L.circleMarker(latlng, { 
+                color: '#2B1303',
+                weight: 1,
+                fillColor: '#b46d00',
+                fillOpacity: .7,
+                radius: 5
+                });   
+            },
+    
+    filter: WWA_filter,
+            
+            
+            onEachFeature: function(feature, layer){
+                                layer.on("mouseover", function(){
+                    layer.setStyle({
+                        fillColor: "yellow"
+                    })
+                });
+                layer.on("mouseout", function(){
+                    layer.setStyle({
+                        fillColor: '#b46d00'
+                    })
+                }); 
+                layer.on("mouseover", function(){
+                });
+                
+                layer.bindTooltip("City Name:" + ' ' +feature.properties.plant_name + "<br>" + "Territory:" + ' ' +feature.properties.capacity_mw).openPopup()
+            } }).addTo(map) 
+
+function Detroit_filter(feature) {
+     if (feature.properties.capacity_mw === "Big Time Wrestling") return true
+    
+    console.log(feature)
+  } 
+        
+var Detroit_points = L.geoJson(plants, {
+            pointToLayer: function(feature,latlng) {
+                return L.circleMarker(latlng, { 
+                color: '#2B1303',
+                weight: 1,
+                fillColor: '#b46d00',
+                fillOpacity: .7,
+                radius: 5
+                });   
+            },
+    
+    filter: Detroit_filter,
+            
+            
+            onEachFeature: function(feature, layer){
+                                layer.on("mouseover", function(){
+                    layer.setStyle({
+                        fillColor: "yellow"
+                    })
+                });
+                layer.on("mouseout", function(){
+                    layer.setStyle({
+                        fillColor: '#b46d00'
+                    })
+                }); 
+                layer.on("mouseover", function(){
+                });
+                
+                layer.bindTooltip("City Name:" + ' ' +feature.properties.plant_name + "<br>" + "Territory:" + ' ' +feature.properties.capacity_mw).openPopup()
+            } }).addTo(map) 
+
+function Houston_filter(feature) {
+     if (feature.properties.capacity_mw === "Houston Wrestling") return true
+    
+    console.log(feature)
+  } 
+        
+var Houston_points = L.geoJson(plants, {
+            pointToLayer: function(feature,latlng) {
+                return L.circleMarker(latlng, { 
+                color: '#2B1303',
+                weight: 1,
+                fillColor: '#b46d00',
+                fillOpacity: .7,
+                radius: 5
+                });   
+            },
+    
+    filter: Houston_filter,
+            
+            
+            onEachFeature: function(feature, layer){
+                                layer.on("mouseover", function(){
+                    layer.setStyle({
+                        fillColor: "yellow"
+                    })
+                });
+                layer.on("mouseout", function(){
+                    layer.setStyle({
+                        fillColor: '#b46d00'
+                    })
+                }); 
+                layer.on("mouseover", function(){
+                });
+                
+                layer.bindTooltip("City Name:" + ' ' +feature.properties.plant_name + "<br>" + "Territory:" + ' ' +feature.properties.capacity_mw +  "Story:" + ' ' + "<a href='https://www.youtube.com/watch?v=ilG_VqrbJck'>Hercules Saves Cornette's life</a><br/>" + "<br>" + "Main Character:" + ' ' + "Hercules and Cornette").openPopup()
+            } }).addTo(map) 
+     var sourcesLayers = {
+    
+          "<b style='color: #4669e7'> Pacific NorthWest Wrestling<b/>": PNW_points,
+         "<b style='color: #4669e7'> Hollywood Wrestling<b/>": hollyWood_points,
+        "<b style='color: #4669e7'> World Wide Wrestling Federation<b/>": wwwf_points,
+          "<b style='color: #4669e7'> Georgia Championship Wrestling<b/>": gcw_points,
+          "<b style='color: #4669e7'> Championship Wrestling From Florida<b/>": fla_points,
+         "<b style='color: #4669e7'> World Class Championship Wrestling<b/>": wccw_points,
+         "<b style='color: #4669e7'> Western State Sports<b/>": western_state_points,
+         "<b style='color: #4669e7'> American Wrestling Association<b/>": awa_points,
+          "<b style='color: #4669e7'> Mid_Atlantic Championship Wrestling<b/>": mid_atlantic_points,
+          
+          "<b style='color: #4669e7'> National Wrestling Federation<b/>": NWF_points,
+          "<b style='color: #4669e7'> World Wrestling Federation<b/>": WWA_points,
+          "<b style='color: #4669e7'> Detroit Big Time  Wrestling<b/>": Detroit_points,
+          "<b style='color: #4669e7'> Houston Wrestling<b/>": Houston_points,
+             "<b style='color: #4669e7'> Continental Championship Wrestling<b/>": CCW_points,
+         "<b style='color: #4669e7'> Mid-South Wrestling<b/>":  mid_south_points,
+         "<b style='color: #4669e7'> Mid-West Wrestling<b/>": Heartland_points
+    };   
+    
+        
+     L.control.layers(null, sourcesLayers, { collapsed:true, position: 'bottomright' }).addTo(map);  
+        
+        
+
+        
+
+      /*var cities = L.geoJson(plants, {
+            pointToLayer: function(feature,latlng) {
+                return L.circleMarker(latlng, { 
+                color: '#2B1303',
+                weight: 1,
+                fillColor: '#b46d00',
+                fillOpacity: .7,
+                radius: 5
+                });   
+            },
+            
+            
+            onEachFeature: function(feature, layer){
+                                layer.on("mouseover", function(){
+                    layer.setStyle({
+                        fillColor: "yellow"
+                    })
+                });
+                layer.on("mouseout", function(){
+                    layer.setStyle({
+                        fillColor: '#b46d00'
+                    })
+                }); 
+                layer.on("mouseover", function(){
+                });
+                
+                layer.bindTooltip("City Name:" + ' ' +feature.properties.plant_name).openPopup()
+            }    */  
+
+    </script>
+    
+</body>
+
+</html>
