@@ -11,6 +11,7 @@
    crossorigin=""/>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.6.0-rc.1/leaflet.js"></script>
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">-->
     <!--<script src="http://cdn.leafletjs.com/leaflet/v1.6.0/leaflet.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
@@ -70,10 +71,10 @@ pattern-master/dist/leaflet.pattern-src.
   width: 100px;
    
 }
-.leaflet-control-layers-toggle:after {
+./*leaflet-control-layers-toggle:after {
   content: 'Press';
   padding-left:  
-}
+}*/
         
 
         
@@ -321,7 +322,7 @@ var wswa = L.geoJson(ter, {style: wswaStyle,
         fillOpacity: 0.4
                     })
                 }); 
-                layer.bindPopup("mouseover", function(){
+                layer.on("mouseover", function(){
                     layer.bindPopup("<b>Territory:</b>" + ' '+"Western States Wrestling Alliance").openPopup();
                   
                 });
